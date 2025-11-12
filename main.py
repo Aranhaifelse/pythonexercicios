@@ -1,4 +1,4 @@
-from services.user_services import login_user
+from services.user_services import login_user, login_admin
 while True: 
     print("1 - Cadastrar funcionário \n 2 - Cadastrar administrador \n 3 - Entrar \n 4 - Sair")
     opcao = int(input("Selecione um número: "))
