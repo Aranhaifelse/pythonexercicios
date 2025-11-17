@@ -4,8 +4,9 @@ def insert_product(valor, nome):
         conn = create_connection()
         cursor = conn.cursor()
 
-        cursor.execute("INSERT INTO produtos(valor, nome) VALUES (%f, %s)", (valor, nome))
+        cursor.execute("INSERT INTO produtos(valor, nome) VALUES (%s, %s)", (valor, nome))
         conn.commit()
+        print("Produto cadastrado!")
     except Exception as e:
         print(e)
     finally:

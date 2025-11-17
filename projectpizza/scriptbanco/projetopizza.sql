@@ -44,11 +44,6 @@ foreign key (mesa_id) references mesas (mesa_id)
 );
 
 
-
-select * from pedidosselect * from pedido_produto
-drop table garcons cascade
-
-
 insert into produtos (valor, nome) values
 (22.99, 'Pizza de frango'),
 (30.00, 'Pizza de camarão'),

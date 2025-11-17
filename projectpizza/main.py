@@ -1,5 +1,5 @@
 from services.user_services import insert_user,login
-from view.admin_view import panel
+from view.admin_view import panel, panel_admin
 while True: 
     print("1 - Cadastrar\n 2 - Entrar\n 3 - Administrar produtos\n  4 - Sair")
     opcao = int(input("Selecione um número: "))
@@ -20,4 +20,12 @@ while True:
         else:
             print("Usuario ou senha inválidos")
     elif opcao == 3:
+        email = input("Digite um email: ")
+        password = input("Digite uma senha: ")
+        user_auth = login(email, password)
+        if user_auth: 
+            panel_admin()
+        else:
+            print("Usuario ou senha inválidos")
+    elif opcao == 4:
         break
