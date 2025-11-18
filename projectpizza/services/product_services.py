@@ -22,8 +22,17 @@ def ask_food(garcom_id):
     finally:
         conn.close()
         cursor.close()
-def lis_food():
-    conn = create_connection()
-    cursor = conn.cursor()
-
+def list_food(id):
+    try:
+        conn = create_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT p.garcom_id, pp.pedido_id, pr.valor, pr.nome, pp.quantidade FROM  pedido_produto pp INNER JOIN produtos pr ON pp.produto_id=pr.produto_id INNER JOIN pedidos p ON pp.pedido_id=p.pedido_id WHERE pp.pedido_id = %s", (id,))
+        conn.commit()
+        lists = cursor.fetchall()
+        return lists 
+    except Exception as e:
+        print(e)
+    finally:
+        conn.close()
+        cursor.close()
     

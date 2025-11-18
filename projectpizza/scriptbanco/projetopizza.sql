@@ -46,15 +46,6 @@ foreign key (mesa_id) references mesas (mesa_id)
 );
 
 
-
-select * from pedidos
-select * from pedido_produto
-drop table pedido_produto cascade
-drop table pedidos cascade
-drop table 
-delete * FROM pedidos;
-DELETE FROM pedido_produto;
-
 insert into produtos (valor, nome) values
 (22.99, 'Pizza de frango'),
 (30.00, 'Pizza de camarão'),
@@ -89,3 +80,21 @@ insert into pedido_mesa (pedido_id, mesa_id) values
 (1, 1),
 (2, 2),
 (3, 3);
+id_garcom, id_pedido, valor, nome, qtd
+
+select p.garcom_id, pp.pedido_id, pr.valor, pr.nome, pp.quantidade
+from  pedido_produto pp
+inner join produtos pr
+on pp.produto_id=pr.produto_id
+inner join pedidos p 
+on pp.pedido_id=p.pedido_id
+where pp.pedido_id = 1;
+
+
+select * from pedidos
+select * from pedido_produto
+drop table pedido_produto cascade
+drop table pedidos cascade
+drop table 
+delete * FROM pedidos;
+DELETE FROM pedido_produto;

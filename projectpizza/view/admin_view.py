@@ -8,7 +8,12 @@ def panel(user_auth):
         if opcao == 1:
                 ask_food(user_auth[0])  
         elif opcao == 2:
-              list_food()
+              id_pedido = int(input("Digite o id do pedido: "))
+              lists = list_food(id_pedido)
+              print("x------------PEDIDOS---------------x")
+              for order in lists:
+                print(f"{order[1]} - R${order[2]} {order[3]} x {order[4]}")
+              print("x----------------------------------x")  
         elif opcao == 4:
                 break
 
