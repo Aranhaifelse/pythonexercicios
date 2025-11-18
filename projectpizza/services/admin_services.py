@@ -25,5 +25,5 @@ def update_value(id_product, new_value):
         print(e)
     finally:
         conn.close()
-
+        cursor.close()
     

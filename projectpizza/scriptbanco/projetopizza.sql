@@ -24,25 +24,36 @@ foreign key (garcom_id) references garcons (garcom_id)
 
 create table mesas(
 mesa_id serial primary key,
-quantidade int not null 
+pessoas int not null 
 );
  
 create table pedido_produto (
 pedido_id int not null,
 produto_id int not null,
+quantidade int not null,
 primary key (pedido_id, produto_id),
 foreign key (pedido_id) references pedidos (pedido_id),
 foreign key (produto_id) references produtos (produto_id)
 );
 
 create table pedido_mesa (
+id serial primary key,
 pedido_id int not null,
 mesa_id int not null,
-primary key (pedido_id, mesa_id),
+primary key (pedido_id, pedido_mesa),
 foreign key (pedido_id) references pedidos (pedido_id),
 foreign key (mesa_id) references mesas (mesa_id)
 );
 
+
+
+select * from pedidos
+select * from pedido_produto
+drop table pedido_produto cascade
+drop table pedidos cascade
+drop table 
+delete * FROM pedidos;
+DELETE FROM pedido_produto;
 
 insert into produtos (valor, nome) values
 (22.99, 'Pizza de frango'),
@@ -55,7 +66,7 @@ insert into garcons (nome, email, password, telefone) values
 ('Jackson Marfim','Jacskon@teste.com','1223', 829982),
 ('Michele Ribeiro','Michele@teste.com','123', 829859);
 
-insert into mesas (quantidade) values
+insert into mesas (pessoas) values
 (2),
 (5),
 (3);
@@ -67,7 +78,7 @@ insert into pedidos(garcom_id) values
 (2),
 (1);
 
-insert into pedido_produto (pedido_id, produto_id) values 
+insert into pedido_produto (pedido_id, produto_id, quantidade) values 
 (1, 1),
 (1, 4),
 (2, 3),

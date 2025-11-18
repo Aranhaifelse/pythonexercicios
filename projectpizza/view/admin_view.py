@@ -1,12 +1,14 @@
 from config.bd import create_connection
 from services.admin_services import insert_product, update_value
-from services.product_services import ask_food
+from services.product_services import ask_food, list_food
 def panel(user_auth):
     while True:
-        print("1 - Inserir pedidos \n 2 - Listar pedidos \n 3 - Remover/Atualizar pedido\n 4 - Sair do sistema")
+        print("1 - Inserir pedidos\n 2 - Listar pedidos\n 3 - Remover/Atualizar pedido\n 4 - Sair do sistema")
         opcao = int(input("Selecione um número: "))
         if opcao == 1:
                 ask_food(user_auth[0])  
+        elif opcao == 2:
+              list_food()
         elif opcao == 4:
                 break
 
