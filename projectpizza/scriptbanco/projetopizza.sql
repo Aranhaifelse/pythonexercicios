@@ -20,21 +20,12 @@ hora timestamp default current_timestamp,
 foreign key (garcom_id) references garcons (garcom_id)
 );
 
-
-
 create table mesas(
 mesa_id serial primary key,
 pessoas int not null 
 );
  
-create table pedido_produto (
-pedido_id int not null,
-produto_id int not null,
-quantidade int not null,
-primary key (pedido_id, produto_id),
-foreign key (pedido_id) references pedidos (pedido_id),
-foreign key (produto_id) references produtos (produto_id)
-);
+
 
 create table pedido_mesa (
 id serial primary key,
@@ -81,8 +72,9 @@ insert into pedido_mesa (pedido_id, mesa_id) values
 (2, 2),
 (3, 3);
 id_garcom, id_pedido, valor, nome, qtd
+-inner join-
 
-select p.garcom_id, pp.pedido_id, pr.valor, pr.nome, pp.quantidade
+select pp.pedido_id, pp.produto_id , pr.valor, pr.nome, pp.quantidade
 from  pedido_produto pp
 inner join produtos pr
 on pp.produto_id=pr.produto_id
@@ -90,11 +82,18 @@ inner join pedidos p
 on pp.pedido_id=p.pedido_id
 where pp.pedido_id = 1;
 
+-update- 
 
-select * from pedidos
+UPDATE pedido_produto 
+SET produto_id = 3, quantidade = 3
+WHERE pedido_id = 8 AND produto_id = 1
+
+Truncate pedido_produto
+truncate pedidos cascade
+select * from produtos
 select * from pedido_produto
 drop table pedido_produto cascade
 drop table pedidos cascade
-drop table 
 delete * FROM pedidos;
 DELETE FROM pedido_produto;
+

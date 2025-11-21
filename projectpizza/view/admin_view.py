@@ -1,24 +1,29 @@
 from config.bd import create_connection
 from services.admin_services import insert_product, update_value
-from services.product_services import ask_food, list_food
-def panel(user_auth):
+from services.product_services import ask_food, list_food, remove_food, update_food
+def panel(waiter_auth):
     while True:
-        print("1 - Inserir pedidos\n 2 - Listar pedidos\n 3 - Remover/Atualizar pedido\n 4 - Sair do sistema")
+        print("X---------------PAINEL DE PEDIDOS--------------X")
+        print("1 - Inserir pedidos\n2 - Listar pedidos\n3 - Remover pedido\n4 - Atualizar pedido\n5 - Sair do sistema")
         opcao = int(input("Selecione um número: "))
         if opcao == 1:
-                ask_food(user_auth[0])  
+                ask_food(waiter_auth[0])  
         elif opcao == 2:
               id_pedido = int(input("Digite o id do pedido: "))
               lists = list_food(id_pedido)
-              print("x------------PEDIDOS---------------x")
+              print(f"x------------PEDIDO ID: {id_pedido} ---------------x")
+              total = 0
               for order in lists:
-                print(f"{order[1]} - R${order[2]} {order[3]} x {order[4]}")
-              print("x----------------------------------x")  
+                print(f"R${order[2]} {order[3]} x {order[4]}")
+                total = total + order[2] * order[4]
+              print(f"Total: R${total:.2f}")
+              print("x-----------------------------------------x")  
+        elif opcao == 3:
+                remove_food()
         elif opcao == 4:
+                update_food(waiter_auth[0])
+        elif opcao == 5:
                 break
-
-
-
 
 def panel_admin():
     while True:
