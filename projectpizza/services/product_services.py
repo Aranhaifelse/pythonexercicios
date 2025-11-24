@@ -49,6 +49,7 @@ def remove_food():
 
         pedido_id = int(input("Digite o id do pedido: "))
         lists = list_food(pedido_id)
+        
         print(f"x------------PEDIDO ID: {pedido_id} ---------------x")
         total = 0
         for order in lists:
@@ -72,24 +73,33 @@ def update_food(waiter_id):
         cursor = conn.cursor()
 
         print("Qual pedido/produto deseja alterar? ")
+
         cursor.execute("SELECT pp.pedido_id, pr.produto_id, pr.nome, pp.quantidade FROM  pedido_produto pp INNER JOIN produtos pr ON pp.produto_id=pr.produto_id INNER JOIN pedidos p ON pp.pedido_id=p.pedido_id ")
         conn.commit()
         orders = cursor.fetchall()
         print("PEDIDOS:")
         for order in orders:
             print(f"N°{order[0]}: ({order[1]}) - {order[2]} x {order[3]}")
-
         pedido_id = int(input("Digite o id do pedido que quer alterar: "))
-        produto_id = int(input("Digite o id do produto: "))
+        
         cursor.execute("SELECT valor FROM produtos")
         conn.commit()
         value = cursor.fetchall()
         print(f"1 - Pizza de frango R${value[0]}\n2 - Pizza de camarão R${value[1]}\n3 - Pizza de calabresa R${value[2]}\n4 - Coca-cola R${value[3]}\n5 - Água s/gás R${value[4]}")
-        print("O que será alterado? ")
-        new_produto_id = int(input("Digite qual será o novo produto: "))
-        quantity = int(input("Digite quantos deseja: "))
-        cursor.execute("UPDATE pedido_produto SET produto_id = %s, quantidade = %s WHERE pedido_id = %s AND produto_id = %s", (new_produto_id, quantity, pedido_id, produto_id))
-        conn.commit()
+        opcao = int(input("O que será alterado?(trocar=1/adicionar=2)"))
+
+        if opcao == 1: 
+            produto_id = int(input("Digite o id do produto: "))
+            new_produto_id = int(input("Digite qual será o novo produto: "))
+            quantity = int(input("Digite quantos deseja: "))
+            cursor.execute("UPDATE pedido_produto SET produto_id = %s, quantidade = %s WHERE pedido_id = %s AND produto_id = %s", (new_produto_id, quantity, pedido_id, produto_id))
+            conn.commit()
+
+        elif opcao == 2:
+            new_produto_id = int(input("Digite qual será o novo produto: "))
+            quantity = int(input("Digite quantos deseja: "))
+            cursor.execute("INSERT INTO pedido_produto(pedido_id, produto_id, quantidade) VALUES (%s, %s, %s)", (pedido_id, new_produto_id, quantity))
+            conn.commit()
         print("Alterado!")
     except Exception as e:
         print(e)
