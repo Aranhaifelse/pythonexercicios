@@ -4,12 +4,18 @@ def ask_food(garcom_id):
         conn = create_connection()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO pedidos(garcom_id) VALUES (%s) RETURNING pedido_id", (garcom_id,))
+        conn.commit()
         pedido_id = cursor.fetchone()[0]
+        pessoas = int(input("Digite quantas pessoas tem na mesa: "))
+        cursor.execute("INSERT INTO mesas(pessoas, pedido_id) VALUES (%s, %s)", (pessoas, pedido_id))
         conn.commit()
         while True:    
-            print("1 - Pizza de frango R$22.99\n2 - Pizza de camarão R$30.00\n3 - Pizza de calabresaR$20.00\n4 - Coca-cola R$5.00\n5 - Água s/gás R$2.50")
+            cursor.execute("SELECT valor FROM produtos")
+            value = cursor.fetchall()
+            print(f"1 - Pizza de frango R${value[0]}\n2 - Pizza de camarão R${value[1]}\n3 - Pizza de calabresa R${value[2]}\n4 - Coca-cola R${value[3]}\n5 - Água s/gás R${value[4]}")
             produto_id = int(input("Digite um número para escolher: "))
             quantity = int(input("Digite quantos quer: "))
+
             cursor.execute("INSERT INTO pedido_produto(pedido_id, produto_id, quantidade) VALUES (%s, %s, %s)", (pedido_id, produto_id, quantity))
             conn.commit()
             resp = input("Deseja mais algo? (s/n)").lower()
@@ -26,7 +32,7 @@ def list_food(id):
     try:
         conn = create_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT pp.pedido_id, pp.produto_id,  pr.valor, pr.nome, pp.quantidade FROM  pedido_produto pp INNER JOIN produtos pr ON pp.produto_id=pr.produto_id INNER JOIN pedidos p ON pp.pedido_id=p.pedido_id WHERE pp.pedido_id = %s", (id,))
+        cursor.execute("SELECT m.mesa_id, m.pessoas, pp.pedido_id, pp.produto_id, pr.valor, pr.nome, pp.quantidade FROM pedido_produto pp INNER JOIN produtos pr ON pp.produto_id=pr.produto_id INNER JOIN pedidos p ON pp.pedido_id=p.pedido_id INNER JOIN mesas m ON pp.pedido_id=m.pedido_id WHERE m.mesa_id = %s", (id,))
         conn.commit()
         lists = cursor.fetchall()
         return lists 
@@ -46,8 +52,8 @@ def remove_food():
         print(f"x------------PEDIDO ID: {pedido_id} ---------------x")
         total = 0
         for order in lists:
-            print(f"P{order[1]} - R${order[2]} {order[3]} x {order[4]}")
-            total = total + order[2] * order[4]
+            print(f"P{order[3]} - R${order[4]} {order[5]} x {order[6]}")
+            total = total + order[4] * order[6]
         print(f"Total: R${total:.2f}")
         print("x-----------------------------------------x")
         produto_id = int(input("Digite o id do produto que deseja excluir: "))
@@ -75,8 +81,10 @@ def update_food(waiter_id):
 
         pedido_id = int(input("Digite o id do pedido que quer alterar: "))
         produto_id = int(input("Digite o id do produto: "))
-
-        print("1 - Pizza de frango R$22.99\n2 - Pizza de camarão R$30.00\n3 - Pizza de calabresaR$20.00\n4 - Coca-cola R$5.00\n5 - Água s/gás R$2.50")
+        cursor.execute("SELECT valor FROM produtos")
+        conn.commit()
+        value = cursor.fetchall()
+        print(f"1 - Pizza de frango R${value[0]}\n2 - Pizza de camarão R${value[1]}\n3 - Pizza de calabresa R${value[2]}\n4 - Coca-cola R${value[3]}\n5 - Água s/gás R${value[4]}")
         print("O que será alterado? ")
         new_produto_id = int(input("Digite qual será o novo produto: "))
         quantity = int(input("Digite quantos deseja: "))

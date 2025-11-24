@@ -1,4 +1,8 @@
 
+
+CREATE DATABASE postgres OWNER postgres;
+
+
 create table produtos(
 produto_id serial primary key,
 valor float not null,
@@ -22,16 +26,23 @@ foreign key (garcom_id) references garcons (garcom_id)
 
 create table mesas(
 mesa_id serial primary key,
+pedido_id int not null,
 pessoas int not null 
 );
  
+create table pedido_produto(
+pedido_id int not null,
+produto_id int not null,
+quantidade int not null,
+foreign key (pedido_id) references pedidos(pedido_id),
+foreign key (produto_id) references produtos(produto_id)
+);
 
 
 create table pedido_mesa (
-id serial primary key,
 pedido_id int not null,
 mesa_id int not null,
-primary key (pedido_id, pedido_mesa),
+primary key (pedido_id, mesa_id),
 foreign key (pedido_id) references pedidos (pedido_id),
 foreign key (mesa_id) references mesas (mesa_id)
 );
@@ -74,15 +85,25 @@ insert into pedido_mesa (pedido_id, mesa_id) values
 id_garcom, id_pedido, valor, nome, qtd
 -inner join-
 
-select pp.pedido_id, pp.produto_id , pr.valor, pr.nome, pp.quantidade
+select pm.mesa_id, pp.pedido_id, pp.produto_id , pr.valor, pr.nome, pp.quantidade
 from  pedido_produto pp
 inner join produtos pr
 on pp.produto_id=pr.produto_id
 inner join pedidos p 
 on pp.pedido_id=p.pedido_id
-where pp.pedido_id = 1;
+inner join pedido_mesa pm
+on pp.pedido_id=pm.pedido_id
 
--update- 
+
+SELECT m.mesa_id, m.pessoas, pp.pedido_id, pp.produto_id, pr.valor, pr.nome, pp.quantidade 
+FROM pedido_produto pp 
+INNER JOIN produtos pr 
+ON pp.produto_id=pr.produto_id 
+INNER JOIN pedidos p 
+ON pp.pedido_id=p.pedido_id 
+INNER JOIN mesas m 
+ON pp.pedido_id=m.pedido_id
+WHERE m.mesa_id =1
 
 UPDATE pedido_produto 
 SET produto_id = 3, quantidade = 3
@@ -90,10 +111,14 @@ WHERE pedido_id = 8 AND produto_id = 1
 
 Truncate pedido_produto
 truncate pedidos cascade
-select * from produtos
-select * from pedido_produto
+
+select * from pedidos where garcom_id = 1
+select valor from produtos 
+select * from mesas
+
 drop table pedido_produto cascade
-drop table pedidos cascade
+drop table mesas cascade
 delete * FROM pedidos;
 DELETE FROM pedido_produto;
+
 

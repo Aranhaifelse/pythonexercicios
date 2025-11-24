@@ -15,10 +15,11 @@ def insert_user(email: str, password: str, name: str, fone: str):
 
 def login(email: str,password: str):
     try:
-        con = create_connection()
-        cursor = con.cursor() #Cursor() Manda e recebe os comandos entre o python e o Banco de dados
-
+        conn = create_connection()
+        cursor = conn.cursor() #Cursor() Manda e recebe os comandos entre o python e o Banco de dados
+       
         cursor.execute("SELECT * FROM garcons WHERE email=%s", (email,)) 
+        conn.commit()
         user = cursor.fetchone()
         if user and checar_password(password, bytes(user[4])):
             return user  
@@ -27,4 +28,4 @@ def login(email: str,password: str):
         print(e)
     finally:
         cursor.close()
-        con.close()
+        conn.close()

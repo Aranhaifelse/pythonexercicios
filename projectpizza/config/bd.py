@@ -4,7 +4,7 @@ def create_connection():
         conn = psycopg2.connect(
             dbname='projetopizza',
             user='postgres',
-            password='@Cat20000',
+            password='123456',
             host='localhost',
             port='5432'
         )

@@ -8,20 +8,24 @@ def panel(waiter_auth):
         opcao = int(input("Selecione um número: "))
         if opcao == 1:
                 ask_food(waiter_auth[0])  
+
         elif opcao == 2:
-              id_pedido = int(input("Digite o id do pedido: "))
-              lists = list_food(id_pedido)
-              print(f"x------------PEDIDO ID: {id_pedido} ---------------x")
+              id_mesa = int(input("Digite o id da mesa: "))
+              lists = list_food(id_mesa)
+              print(f"x------------MESA N°: {id_mesa} ---------------x")
               total = 0
               for order in lists:
-                print(f"R${order[2]} {order[3]} x {order[4]}")
-                total = total + order[2] * order[4]
+                print(f"R${order[4]} {order[5]} x {order[6]}")
+                total = total + order[4] * order[6]
               print(f"Total: R${total:.2f}")
               print("x-----------------------------------------x")  
+
         elif opcao == 3:
                 remove_food()
+
         elif opcao == 4:
                 update_food(waiter_auth[0])
+
         elif opcao == 5:
                 break
 
@@ -34,9 +38,7 @@ def panel_admin():
                 nome = input("Digite o nome da comida: ")
                 insert_product(valor, nome)
         elif opcao == 2:
-                id_product = int(input("Digite o id do produto: "))
-                new_value = float(input("Digite o novo valor: "))
-                update_value(id_product, new_value)
+                update_value()
         elif opcao == 3:
                 break
               
